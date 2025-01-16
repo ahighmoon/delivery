@@ -1,5 +1,7 @@
 # delivery
 
+[![Build Status](https://github.com/ahighmoon/delivery/actions/workflows/ci.yml/badge.svg)](https://github.com/ahighmoon/delivery/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/ahighmoon/delivery/graph/badge.svg?token=0LAITG3F2C)](https://codecov.io/gh/ahighmoon/delivery)
 
 ## Project Setup
 
