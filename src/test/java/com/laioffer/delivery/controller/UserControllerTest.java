@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -33,10 +34,8 @@ class UserControllerTest {
 
     @Test
     void shouldReturnNotFoundIfUserNotExists() throws Exception {
-        // 模拟 UserService 返回 null
         when(userService.getUserById("99")).thenReturn(null);
 
-        // 模拟 HTTP 请求并验证结果
         mockMvc.perform(get("/api/users/99")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());

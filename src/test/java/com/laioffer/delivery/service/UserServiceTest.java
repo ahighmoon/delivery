@@ -1,5 +1,6 @@
 package com.laioffer.delivery.service;
 
+import com.laioffer.delivery.dto.UserDto;
 import com.laioffer.delivery.model.User;
 import com.laioffer.delivery.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -14,61 +16,64 @@ import static org.mockito.Mockito.*;
 class UserServiceTest {
 
     @Mock
-    private UserRepository userRepository; // 模拟 UserRepository
+    private UserRepository userRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
-    private UserService userService; // 注入 Mock 对象到 UserService
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // 初始化 Mock 对象
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
     void shouldGetUserById() {
-        // 模拟返回的用户数据
         User mockUser = new User();
         mockUser.setId("123");
         mockUser.setEmail("test@example.com");
         mockUser.setPassword("password123");
         mockUser.setName("Test User");
 
-        // 定义 Repository 的行为
         when(userRepository.findById("123")).thenReturn(java.util.Optional.of(mockUser));
 
-        // 调用 Service 方法
         User result = userService.getUserById("123");
 
-        // 验证结果
         assertNotNull(result);
         assertEquals("123", result.getId());
         assertEquals("test@example.com", result.getEmail());
         assertEquals("Test User", result.getName());
 
-        // 验证 Repository 被正确调用
         verify(userRepository, times(1)).findById("123");
     }
 
     @Test
     void shouldCreateUser() {
-        // 模拟用户输入
-        User newUser = new User();
-        newUser.setEmail("newuser@example.com");
-        newUser.setPassword("newpassword123");
-        newUser.setName("New User");
+        UserDto newUserDto = new UserDto();
+        newUserDto.setEmail("newuser@example.com");
+        newUserDto.setPassword("newpassword123");
 
-        // 模拟 Repository 的保存行为
-        when(userRepository.save(any(User.class))).thenReturn(newUser);
+        when(userRepository.existsByEmail("newuser@example.com")).thenReturn(false);
 
-        // 调用 Service 方法
-        User result = userService.createUser(newUser);
+        User savedUser = new User();
+        savedUser.setEmail("newuser@example.com");
+        savedUser.setName("New User");
+        savedUser.setPassword("$2a$10$dummydummydummydummydum");
 
-        // 验证结果
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+
+        User result = userService.createUser(newUserDto);
+
         assertNotNull(result);
         assertEquals("newuser@example.com", result.getEmail());
         assertEquals("New User", result.getName());
+        // 对密码是否加密可以做更精细的断言，这里简单判断非空
+        assertNotNull(result.getPassword());
+        assertNotEquals("newpassword123", result.getPassword()); // 这里不再是明文
 
-        // 验证 Repository 被正确调用
+        verify(userRepository, times(1)).existsByEmail("newuser@example.com");
         verify(userRepository, times(1)).save(any(User.class));
     }
 }

@@ -20,8 +20,12 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column()
     private String name;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -32,5 +36,9 @@ public class User {
     @PreUpdate
     private void setUpdatedAt() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public enum Role {
+        USER, ADMIN
     }
 }
