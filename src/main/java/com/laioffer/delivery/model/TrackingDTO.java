@@ -12,6 +12,14 @@ public class TrackingDTO {
     private String routeInfo;          // 配送路线信息
     private LocalDateTime estimateArrivalTime; // 预计到达时间
 
+    public TrackingDTO(){}
+
+    public TrackingDTO(String status, String location, String routeInfo, LocalDateTime estimatedArrivalTime) {
+        this.status = status;
+        this.location = location;
+        this.routeInfo = routeInfo;
+        this.estimateArrivalTime = estimatedArrivalTime;
+    }
     /**
      * 动态计算预计到达时间
      * @param dispatchedTime 任务分配时间
