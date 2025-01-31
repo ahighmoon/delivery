@@ -40,4 +40,16 @@ public class Delivery {
         ROBOT, DRONE
     }
 
+    // 新增方法，根据时间戳返回订单当前状态
+    public String getOrderStatus() {
+        if (dispatchedTime == null) {
+            return "Ordered";
+        } else if (transitStartTime == null) {
+            return "Dispatched";
+        } else if (transitEndTime == null) {
+            return "In Transit";
+        } else {
+            return "Completed";
+        }
+    }
 }
