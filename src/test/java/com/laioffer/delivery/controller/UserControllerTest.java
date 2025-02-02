@@ -65,8 +65,8 @@ public class UserControllerTest {
 
     @BeforeAll
     static void beforeAll() {
-        Dotenv dotenv = Dotenv.load();
-        System.setProperty("JWT_SECRET", dotenv.get("JWT_SECRET"));
+        Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+        System.setProperty("JWT_SECRET", dotenv.get("JWT_SECRET", "ahighmoon-secret12345678ahighmoon-secret12345678"));
         System.setProperty("JWT_EXPIRATION", dotenv.get("JWT_EXPIRATION", "3600000"));
     }
 
