@@ -19,6 +19,9 @@ public class Order {
     private User user;
 
     @Column(nullable = false)
+    private String deliveryId;  // 新增字段，指向 Delivery
+
+    @Column(nullable = false)
     private String senderName;
 
     @Column(nullable = false)
@@ -57,9 +60,15 @@ public class Order {
         this.updatedAt = LocalDateTime.now();
     }
 
+
     public enum Status {
-        ORDERED, DISPATCHED, IN_TRANSIT, COMPLETED
+        ORDERED, DISPATCHED, IN_TRANSIT, COMPLETED;
+
+        public static Status fromString(String value) {
+            return Status.valueOf(value.toUpperCase());
+        }
     }
+
 
 }
 

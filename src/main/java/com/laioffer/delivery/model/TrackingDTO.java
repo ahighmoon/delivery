@@ -2,19 +2,21 @@ package com.laioffer.delivery.model;
 
 import lombok.Data;
 
-import java.time.Duration;
+
+import java.awt.*;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
-public class TrackingDTO {
+public class TrackingDto {
     private String status;                // 配送状态
-    private String location;              // 设备实时位置
-    private String routeInfo;          // 配送路线信息
+    private Map<String, Double> location;           // 设备实时位置
+    private RouteInfo routeInfo;          // 配送路线信息
     private LocalDateTime estimateArrivalTime; // 预计到达时间
 
-    public TrackingDTO(){}
+    public TrackingDto(){}
 
-    public TrackingDTO(String status, String location, String routeInfo, LocalDateTime estimatedArrivalTime) {
+    public TrackingDto(String status, Map<String, Double>  location, RouteInfo routeInfo, LocalDateTime estimatedArrivalTime) {
         this.status = status;
         this.location = location;
         this.routeInfo = routeInfo;
@@ -32,6 +34,16 @@ public class TrackingDTO {
         } else {
             this.estimateArrivalTime = null;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "TrackingDTO{" +
+                "status='" + status +
+                ", location='" + location +
+                ", routeInfo='" + routeInfo +
+                ", estimateArrivalTime=" + estimateArrivalTime +
+                '}';
     }
 }
 
