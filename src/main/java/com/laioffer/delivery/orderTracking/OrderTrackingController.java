@@ -1,6 +1,6 @@
 package com.laioffer.delivery.orderTracking;
 
-import com.laioffer.delivery.model.TrackingDto;
+import com.laioffer.delivery.dto.TrackingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
