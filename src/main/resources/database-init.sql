@@ -1,6 +1,7 @@
--- 禁用外键检查
+-- 禁用外键检查，防止删除表时报错
 SET FOREIGN_KEY_CHECKS = 0;
 
+-- 删除旧表
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS deliveries;
@@ -22,57 +23,57 @@ CREATE TABLE users (
 
 -- 创建订单表
 CREATE TABLE orders (
-    id CHAR(36) PRIMARY KEY,               -- 订单 ID，主键
-    user_id CHAR(36) NOT NULL,             -- 下单用户 ID，外键关联 users 表
-    delivery_id CHAR(36),                  -- 配送 ID，外键关联 deliveries 表
-    sender_name VARCHAR(255) NOT NULL, -- 发件人姓名
-    sender_email VARCHAR(255) NOT NULL, -- 发件人邮箱
-    sender_address TEXT NOT NULL,      -- 发件人地址
-    recipient_name VARCHAR(255) NOT NULL, -- 收件人姓名
-    recipient_email VARCHAR(255) NOT NULL, -- 收件人邮箱
-    recipient_address TEXT NOT NULL,   -- 收件人地址
-    package_weight FLOAT NOT NULL,     -- 包裹重量
-    package_dimensions VARCHAR(50) NOT NULL, -- 包裹尺寸 (格式如 10x10x10)
-    status ENUM('Ordered', 'Dispatched', 'In Transit', 'Completed') NOT NULL DEFAULT 'Ordered', -- 订单状态
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 创建时间
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新时间
+                        id CHAR(36) PRIMARY KEY,
+                        user_id CHAR(36) NOT NULL,
+                        delivery_id CHAR(36),
+                        sender_name VARCHAR(255) NOT NULL,
+                        sender_email VARCHAR(255) NOT NULL,
+                        sender_address TEXT NOT NULL,
+                        recipient_name VARCHAR(255) NOT NULL,
+                        recipient_email VARCHAR(255) NOT NULL,
+                        recipient_address TEXT NOT NULL,
+                        package_weight FLOAT NOT NULL,
+                        package_dimensions VARCHAR(50) NOT NULL,
+                        status ENUM('ORDERED', 'DISPATCHED', 'IN_TRANSIT', 'COMPLETED') NOT NULL DEFAULT 'ORDERED',
+                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 -- 创建配送表
 CREATE TABLE deliveries (
-    id CHAR(36) PRIMARY KEY,               -- 配送 ID，主键
-    delivery_type ENUM('Robot', 'Drone') NOT NULL, -- 配送方式
-    device_id CHAR(36) NOT NULL,           -- 配送设备 ID，外键关联 devices 表
-    route_info JSON NOT NULL,          -- 路线信息（JSON 格式）
-    price FLOAT NOT NULL,              -- 估算价格
-    estimate_time INT NOT NULL,        -- 估算时间（分钟）
-    actual_time INT,                   -- 实际时间（分钟）
-    dispatched_time TIMESTAMP,         -- 分配任务时间
-    transit_start_time TIMESTAMP,      -- 开始递送时间
-    transit_end_time TIMESTAMP,        -- 完成递送时间
-    finish_time TIMESTAMP              -- 返回配送站时间
+                            id CHAR(36) PRIMARY KEY,
+                            delivery_type ENUM('ROBOT', 'DRONE') NOT NULL,
+                            device_id CHAR(36) NOT NULL,
+                            route_info JSON NOT NULL,
+                            price FLOAT NOT NULL,
+                            estimate_time INT NOT NULL,
+                            actual_time INT,
+                            dispatched_time TIMESTAMP,
+                            transit_start_time TIMESTAMP,
+                            transit_end_time TIMESTAMP,
+                            finish_time TIMESTAMP
 );
 
 -- 创建设备表
 CREATE TABLE devices (
-    id CHAR(36) PRIMARY KEY,               -- 设备 ID，主键
-    type ENUM('Robot', 'Drone') NOT NULL, -- 设备类型
-    location POINT NOT NULL,           -- 实时位置（地理坐标）
-    station VARCHAR(255) NOT NULL,     -- 当前所在配送站
-    capacity FLOAT NOT NULL DEFAULT 0.0, -- 最大容量（单位：kg）
-    status ENUM('Idle', 'Dispatched', 'In Transit') NOT NULL DEFAULT 'Idle' -- 当前状态
+                         id CHAR(36) PRIMARY KEY,
+                         type ENUM('ROBOT', 'DRONE') NOT NULL,
+                         location JSON NOT NULL,
+                         station VARCHAR(255) NOT NULL,
+                         capacity FLOAT NOT NULL DEFAULT 0.0,
+                         status ENUM('IDLE', 'DISPATCHED', 'IN_TRANSIT') NOT NULL DEFAULT 'IDLE'
 );
 
 -- 添加外键约束
 ALTER TABLE orders
     ADD CONSTRAINT fk_orders_users
-    FOREIGN KEY (user_id) REFERENCES users(id)
-    ON DELETE CASCADE;
+        FOREIGN KEY (user_id) REFERENCES users(id)
+            ON DELETE CASCADE;
 
 ALTER TABLE orders
     ADD CONSTRAINT fk_orders_deliveries
-    FOREIGN KEY (delivery_id) REFERENCES deliveries(id)
-    ON DELETE SET NULL;
+        FOREIGN KEY (delivery_id) REFERENCES deliveries(id)
+            ON DELETE SET NULL;
 
 ALTER TABLE deliveries
     ADD CONSTRAINT fk_deliveries_devices

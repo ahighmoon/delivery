@@ -1,6 +1,7 @@
 package com.laioffer.delivery.model;
 
 import jakarta.persistence.*;
+
 import java.util.UUID;
 import lombok.Data;
 
@@ -17,8 +18,8 @@ public class Device {
     @Column(nullable = false)
     private Type type;
 
-    @Column(nullable = false)
-    private String location; // 存储经纬度点信息
+    @Column(nullable = false, columnDefinition = "JSON")
+    private String location;  // 将 location 映射为 Point 类型
 
     @Column(nullable = false)
     private String station;
