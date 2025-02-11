@@ -78,3 +78,5 @@ ALTER TABLE deliveries
     ADD CONSTRAINT fk_deliveries_devices
         FOREIGN KEY (device_id) REFERENCES devices(id)
             ON DELETE CASCADE;
+
+  

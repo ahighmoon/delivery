@@ -2,7 +2,6 @@ package com.laioffer.delivery.model;
 
 import jakarta.persistence.*;
 
-import java.awt.*;
 import java.util.UUID;
 import lombok.Data;
 

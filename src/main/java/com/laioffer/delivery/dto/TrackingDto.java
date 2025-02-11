@@ -1,6 +1,5 @@
 package com.laioffer.delivery.dto;
 
-import com.laioffer.delivery.model.RouteInfo;
 import lombok.Data;
 
 
