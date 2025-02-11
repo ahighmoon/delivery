@@ -12,12 +12,13 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 -- 创建用户表
 CREATE TABLE users (
-                       id CHAR(36) PRIMARY KEY,
-                       email VARCHAR(255) NOT NULL UNIQUE,
-                       password VARCHAR(255) NOT NULL,
-                       name VARCHAR(255) NOT NULL,
-                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    id CHAR(36)PRIMARY KEY,               -- 用户 ID，主键
+    email VARCHAR(255) NOT NULL UNIQUE, -- 邮箱，唯一
+    password VARCHAR(255) NOT NULL,    -- 加密后的密码
+    name VARCHAR(255),        -- 用户姓名
+    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER', -- 用户角色（默认普通用户）
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 创建时间
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- 更新时间
 );
 
 -- 创建订单表
@@ -76,7 +77,18 @@ ALTER TABLE orders
 
 ALTER TABLE deliveries
     ADD CONSTRAINT fk_deliveries_devices
-        FOREIGN KEY (device_id) REFERENCES devices(id)
-            ON DELETE CASCADE;
+    FOREIGN KEY (device_id) REFERENCES devices(id)
+    ON DELETE CASCADE;
 
-  
+-- 生成一个 UUID 作为用户 ID
+SET @new_uuid = UUID();
+
+-- 插入用户数据
+INSERT INTO users (id, email, password, name, role)
+VALUES (
+  @new_uuid,
+  'admin@example.com',
+  '$2b$12$LGfue2XVoBYwemyp7zAw5urpBeqxkRSX4KsXaW.bEahi7lni7hghm',
+  'System Administrator',
+  'ADMIN'
+);

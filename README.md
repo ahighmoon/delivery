@@ -26,6 +26,9 @@ MYSQL_PASSWORD=secret12345678
 MYSQL_DATABASE_HOST=localhost
 MYSQL_DATABASE_PORT=3310
 DATABASE_INIT=always
+JWT_SECRET=ahighmoon-secret12345678ahighmoon-secret12345678
+JWT_EXPIRATION=3600000
+GOOGLE_MAP_API_KEY=AIzaSyCm_VX6SczdhLZ5Ayckl8ypl3KE3wf5iCc
 ```
 
 - Start Docker Desktop on your local machine and run the command:
