@@ -52,27 +52,17 @@ public class Order {
     @Column(nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    // Added a new field (fasted or cheapest), if needed
-    @Column
-    private String selectedDeliveryType;
-
-//    reserved for payment information (if consider needed)
-//    @Column(nullable = false)
-//    @Enumerated(EnumType.STRING)
-//    private PaymentStatus paymentStatus = PaymentStatus.PENDING; // New Field
-
     @PreUpdate
     private void setUpdatedAt() {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void setSelectedDeliveryType(String deliveryType) {
+    }
+
     public enum Status {
         ORDERED, DISPATCHED, IN_TRANSIT, COMPLETED
     }
-    // reserved for payment information (if consider needed)
-//    public enum PaymentStatus {
-//        PENDING, PAID
-//    }
 
 }
 

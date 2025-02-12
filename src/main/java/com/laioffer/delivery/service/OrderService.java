@@ -43,12 +43,5 @@ public class OrderService {
             return orderRepository.save(order);
         });
     }
-    // payment status if needed
-//    public Optional<Order> markOrderAsPaid(String orderId) {
-//        return orderRepository.findById(orderId).map(order -> {
-//            order.setPaymentStatus(Order.PaymentStatus.PAID);
-//            order.setStatus(Order.Status.DISPATCHED);
-//            return orderRepository.save(order);
-//        });
-//    }
+
 }
