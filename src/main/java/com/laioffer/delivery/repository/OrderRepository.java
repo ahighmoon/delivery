@@ -10,4 +10,8 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, String> {
 
     List<Order> findByUserId(String userId);
+
+    List<Order> findBySenderName(String senderName);
+
+    List<Order> findByRecipientName(String recipientName);
 }
